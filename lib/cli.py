@@ -3,7 +3,7 @@
 from helpers import (
     display_meals,
     add_meal,
-    #delete_meal,
+    delete_meal,
     add_ingredient,
     exit_program
 )
@@ -19,6 +19,8 @@ def main():
             display_meals()
         elif choice == "2":
             add_meal()
+        elif choice == "3":
+            delete_meal()
         elif choice == "4":
             add_ingredient()
         else:
@@ -30,7 +32,7 @@ def menu():
     print("0. Exit program")
     print("1. View all meals")
     print("2. Add a meal") 
-    #print("3. Delete a meal") 
+    print("3. Delete a meal") 
     print("4. Add an ingredient") 
 
 

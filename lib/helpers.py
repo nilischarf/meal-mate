@@ -25,6 +25,16 @@ def add_meal():
         Meal.create(name, category)
         print(f"{name} has been added to {category}!")
 
+def delete_meal():
+    name = input("Enter meal name to delete: ").strip()
+    meal = Meal.find_by_name(name)
+
+    if meal:
+        meal.delete()
+        print(f"{name} has been deleted.")
+    else:
+        print("Meal not found.")
+
 def add_ingredient():
     meal_name = input("Enter meal name: ").strip()
     meal = Meal.find_by_name(meal_name)

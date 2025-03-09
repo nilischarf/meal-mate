@@ -35,7 +35,7 @@ class Meal:
         return [cls(row[1], row[2], row[0]) for row in CURSOR.fetchall()]
     
     def delete(self):
-        CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id))
+        CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id,))
         CONN.commit()
 
     def get_ingredients(self):
