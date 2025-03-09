@@ -13,7 +13,7 @@ class Ingredient:
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL, 
                 meal_id INTEGER NOT NULL,
-                FOREIGN KEY (meal_id) REFERENCES meals(id) 
+                FOREIGN KEY (meal_id) REFERENCES meals(id) ON DELETE CASCADE
             )
         """)
         CONN.commit()

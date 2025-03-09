@@ -25,7 +25,7 @@ class Meal:
     
     @classmethod
     def find_by_name(cls, name):
-        CURSOR.execute("SELECT * FROM meals where name = ?", (name))
+        CURSOR.execute("SELECT * FROM meals where name = ?", (name,))
         row = CURSOR.fetchone()
         return cls(row[1], row[2], row[0]) if row else None
 
