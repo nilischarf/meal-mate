@@ -11,8 +11,8 @@ class Meal:
         CURSOR.execute("""
             CREATE TABLE IF NOT EXISTS meals(
                 id INTEGER PRIMARY KEY,
-                name TEXT, 
-                category TEXT
+                name TEXT UNIQUE NOT NULL, 
+                category TEXT NOT NULL
             )
         """)
         CONN.commit()
@@ -38,7 +38,9 @@ class Meal:
         CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id))
         CONN.commit()
 
-    # ingredients 
+    def get_ingredients(self):
+        from models.ingredient import Ingredient
+        return Ingredient.get_by_meal_id(self.id)
 
     def __str__(self):
         return f"{self.name} ({self.category})"
