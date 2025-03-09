@@ -23,7 +23,22 @@ def add_meal():
         print("Meal already exists.")
     else:
         Meal.create(name, category)
-        print(f"{name} has ben added to {category}!")
+        print(f"{name} has been added to {category}!")
+
+def add_ingredient():
+    meal_name = input("Enter meal name: ").strip()
+    meal = Meal.find_by_name(meal_name)
+
+    if not meal:
+        print("Meal not found.")
+        return 
+    
+    ingredient_name = input("Enter ingredient name: ").strip()
+    if Ingredient.find_by_name(ingredient_name, meal.id):
+        print("Ingredient already exists!")
+    else:
+        Ingredient.create(ingredient_name, meal.id)
+        print(f"{ingredient_name} has been added to {meal.name}.")
 
 def exit_program():
     print("Goodbye!")
