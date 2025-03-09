@@ -15,6 +15,15 @@ def display_meals():
         for meal in meals:
             print(f"- {meal}")
 
+def add_meal():
+    name = input("Enter meal name: ").strip()
+    category = input("Enter category(Breakfast, Lunch, Dinner...): ").strip()
+
+    if Meal.find_by_name(name):
+        print("Meal already exists.")
+    else:
+        Meal.create(name, category)
+        print(f"{name} has ben added to {category}!")
 
 def exit_program():
     print("Goodbye!")
