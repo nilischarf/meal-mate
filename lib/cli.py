@@ -2,7 +2,7 @@
 
 from helpers import (
     exit_program,
-    helper_1
+    display_meals
 )
 
 
@@ -21,7 +21,7 @@ def main():
 def menu():
     print("Please select an option:")
     print("0. Exit the program")
-    print("1. Some useful function")
+    print("1. No meals found.") # CHANGE!!
 
 
 if __name__ == "__main__":

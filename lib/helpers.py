@@ -1,7 +1,11 @@
 # lib/helpers.py
+from models.meal import Meal
+from models.ingredient import Ingredient 
 
-def helper_1():
-    print("Performing useful function#1.")
+def display_meals():
+    meals = Meal.get_all()
+    if not meals:
+        print("No meals found.")
 
 
 def exit_program():
