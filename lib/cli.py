@@ -5,6 +5,7 @@ from helpers import (
     add_meal,
     delete_meal,
     add_ingredient,
+    view_ingredients,
     exit_program
 )
 
@@ -23,6 +24,8 @@ def main():
             delete_meal()
         elif choice == "4":
             add_ingredient()
+        elif choice == "5":
+            view_ingredients()
         else:
             print("Invalid choice")
 
@@ -33,7 +36,8 @@ def menu():
     print("1. View all meals")
     print("2. Add a meal") 
     print("3. Delete a meal") 
-    print("4. Add an ingredient") 
+    print("4. Add an ingredient to a meal")
+    print("5. View ingredients for a meal")
 
 
 if __name__ == "__main__":

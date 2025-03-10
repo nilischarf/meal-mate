@@ -50,6 +50,21 @@ def add_ingredient():
         Ingredient.create(ingredient_name, meal.id)
         print(f"{ingredient_name} has been added to {meal.name}.")
 
+def view_ingredients():
+    meal_name = input("Enter meal name: ").strip()
+    meal = Meal.find_by_name(meal_name)
+
+    if not meal: 
+        print("Meal not found.")
+    else:
+        ingredients = meal.get_ingredients()
+        if not ingredients:
+            print("No ingredients found for this meal.")
+        else:
+            print(f"Ingredients for {meal.name}: ")
+            for ingredient in ingredients:
+                print(f"- {ingredient}")
+
 def exit_program():
     print("Goodbye!")
     exit()
