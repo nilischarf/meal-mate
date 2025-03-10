@@ -1,43 +1,47 @@
 # lib/cli.py
 
 from helpers import (
-    display_meals,
+    list_categories,
+    add_category,
+    delete_category,
     add_meal,
     delete_meal,
-    add_ingredient,
-    view_ingredients,
-    exit_program
+    edit_meal
 )
 
 
 def main():
-    while True:
+    while True: # not exit 
         menu()
         choice = input("> ").strip()
         if choice == "0":
             exit_program()
         elif choice == "1":
-            display_meals()
-        elif choice == "2":
-            add_meal()
+            list_categories()
+        elif choice == "2": # delete category 
+            add_category()
         elif choice == "3":
-            delete_meal()
+            delete_category()
         elif choice == "4":
-            add_ingredient()
+            add_meal()
         elif choice == "5":
-            view_ingredients()
+            delete_meal()
+        elif choice == "6":
+            edit_meal()
         else:
             print("Invalid choice")
 
 
 def menu():
+    print("MealMate Menu:")
     print("Please select an option:")
-    print("0. Exit program")
-    print("1. View all meals")
-    print("2. Add a meal") 
-    print("3. Delete a meal") 
-    print("4. Add an ingredient to a meal")
-    print("5. View ingredients for a meal")
+    print("0. Exit Program")
+    print("1. View Categories")
+    print("2. Add Category") 
+    print("3. Delete Category") 
+    print("4. Add Meal to Category") 
+    print("5. Delete Meal")
+    print("6. Edit Meal")
 
 
 if __name__ == "__main__":

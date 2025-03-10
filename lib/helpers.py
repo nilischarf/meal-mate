@@ -11,10 +11,12 @@ def list_categories():
     categories = Category.get_all()
     if not categories:
         print("No categories found. Please add a category.")
+        return None
+
     else:
         print("Categories:")
         for i, cat in enumerate(categories, start=1):
-            print(f"{i}. {cat_name}")
+            print(f"{i}. {cat.name}")
         return categories
 
 def add_category():
@@ -25,14 +27,24 @@ def add_category():
     Category.create(name)
     print(f"Category '{name}' added.")
 
-def add_meal(category):
+def delete_category():
+    name = input("Enter category name to delete: ").strip() 
+    category = Category.find_by_name(name)
+
+    if category:
+        category.delete()
+        print(f"{category} has been deleted.")
+    else:
+        print("Category not found.")
+
+def add_meal():
     name = input("Enter meal name: ").strip()
     easiness = int(input("Enter easiness (1-5): "))
     prep_time = int(input("Enter prep time (in minutes): "))
     rating = int(input("Enter rating (1-5): "))
 
-    Meal.create(name, easiness, prep_time, rating, category.id)
-    print(f"Meal '{name}' added to {category.name}.")
+    Meal.create(name, category.id, easiness, prep_time, rating)
+    print(f"Meal '{meal.name}' added to {category.name}.")
 
 def delete_meal():
     name = input("Enter meal name to delete: ").strip() # want to stay in meal 
@@ -61,7 +73,7 @@ def edit_meal():
         new_rating=int(new_rating) if new_rating else None,
     )
 
-    print(f"Meal '{meal.name}' updated successfully.")
+    print(f"Meal '{meal.name}' updated successfully.1")
 
 def exit_program():
     print("Goodbye!")

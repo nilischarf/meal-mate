@@ -10,7 +10,7 @@ class Category:
         CURSOR.execute("""
             CREATE TABLE IF NOT EXISTS categories(
                 id INTEGER PRIMARY KEY,
-                name TEXT UNIQUE NOT NULL, 
+                name TEXT UNIQUE NOT NULL
             )
         """)
         CONN.commit()
@@ -39,7 +39,7 @@ class Category:
         return cls(*row) if row else None
     
     def delete(self):
-        CURSOR.execute("DELETE FROM categories WHERE id = ?", (self.id))
+        CURSOR.execute("DELETE FROM categories WHERE id = ?", (self.id,))
         CONN.commit()
     
     def __str__(self):

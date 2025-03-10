@@ -64,7 +64,6 @@ class Meal:
 
         CONN.commit()
 
-
     def delete(self):
         CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id,))
         CONN.commit()
