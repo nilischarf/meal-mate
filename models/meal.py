@@ -1,13 +1,20 @@
 from models.__init__ import CONN, CURSOR
+from category import Category
 
 class Meal:
-    def __init__(self, id, name, easiness, prep_time, rating, category_id):
+    def __init__(self, name, easiness, prep_time, rating, category_id, id=None):
         self.id = id
         self.name = name
         self.easiness = easiness
         self.prep_time = prep_time
         self.rating = rating
         self.category_id = category_id
+    
+    def __repr__(self):
+        return (
+            f"<Meal {self.id}: {self.name}, {self.easiness}, {self.prep_time}, {self.rating}, " +
+            f"Department ID: {self.department_id}>"
+        )
 
     @property
     def name(self):
@@ -15,7 +22,51 @@ class Meal:
 
     @name.setter
     def name(self, name):
-        self._name = name
+        if isinstance(name, str) and len(name):
+            self._name = name
+        else:
+            raise ValueError(
+                "Name must be a non-empty string."
+            )
+
+    @property
+    def easiness(self):
+        return self._easiness
+
+    @easiness.setter
+    def easiness(self, easiness):
+        if isinstance(easiness, int) and 1 <= easiness <= 5:
+            self._easiness = easiness
+        else:
+            raise ValueError(
+                "Easiness must be an integer between 1 and 5."
+            )
+
+    @property
+    def prep_time(self):
+        return self.prep_time
+
+    @prep_time.setter
+    def prep_time(self, prep_time):
+        if isinstance(prep_time, int) and 0 < prep_time:
+            self._prep_time = prep_time
+        else:
+            raise ValueError(
+                "Prep time must be an integer greater than 0."
+            )
+
+    @property
+    def rating(self):
+        return self.rating
+
+    @rating.setter
+    def rating(self, rating):
+        if isinstance(rating, int) and 1 <= rating <= 5:
+            self._rating = rating
+        else:
+            raise ValueError(
+                "Rating must be an integer between 1 and 5."
+            )
     
     @classmethod
     def create_table(cls):
