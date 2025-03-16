@@ -8,22 +8,31 @@ class Meal:
         self.prep_time = prep_time
         self.rating = rating
         self.category_id = category_id
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
     
     @classmethod
     def create_table(cls):
+        # take out check(easiness) and do it in validations in setters 
         CURSOR.execute("""
             CREATE TABLE IF NOT EXISTS meals(
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL, 
                 easiness INTEGER CHECK(easiness BETWEEN 1 AND 5),
                 prep_time INTEGER NOT NULL,
-                rating INTEGER CHECK(easiness BETWEEN 1 AND 5),
+                rating INTEGER CHECK(easiness BETWEEN 1 AND 5), 
                 category_id INTEGER NOT NULL,
                 FOREIGN KEY (category_id) REFERENCES categories(id)
             )
         """)
         CONN.commit()
-    
+
     @classmethod
     def create(cls, name, easiness, prep_time, rating, category_id):
         CURSOR.execute("""
@@ -68,9 +77,9 @@ class Meal:
         CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id,))
         CONN.commit()
 
-    def get_ingredients(self):
+    def get_categories(self):
         from models.category import Category
         return Category.find_by_id(self.id)
 
-    def __str__(self):
+    def __str__(self): # move to cli 
         return f"{self.name} ({self.category})"

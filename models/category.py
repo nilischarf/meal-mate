@@ -1,19 +1,57 @@
 from models.__init__ import CONN, CURSOR
 
 class Category:
+    all = {}
+
     def __init__(self, id, name):
         self.id = id
         self.name = name
 
+    def __repr__(self):
+        return f"<Category {self.id}: {self.name}>"
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if isinstance(name, str) and len(name):
+            self._name = name
+        else:
+            raise ValueError(
+                "Name must be a non-empty string"
+            )
+
     @classmethod
     def create_table(cls):
-        CURSOR.execute("""
-            CREATE TABLE IF NOT EXISTS categories(
+            sql = """
+                CREATE TABLE IF NOT EXISTS categories(
                 id INTEGER PRIMARY KEY,
-                name TEXT UNIQUE NOT NULL
-            )
-        """)
+                name TEXT)
+            """
+        CURSOR.execute(sql)
         CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS categories;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    def save(self):
+        sql = """
+            INSERT INTO categories (name)
+            VALUES (?)
+        """
+        CURSOR.execute(sql, (self.name))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
 
     @classmethod
     def create(cls, name):
@@ -23,8 +61,9 @@ class Category:
 
     @classmethod
     def get_all(cls):
-        CURSOR.execute("SELECT * FROM categories")
-        return [cls(*row) for row in CURSOR.fetchall()]
+        category = cls(name)
+        category.save()
+        return category
    
     @classmethod
     def find_by_name(cls, name):
@@ -42,5 +81,5 @@ class Category:
         CURSOR.execute("DELETE FROM categories WHERE id = ?", (self.id,))
         CONN.commit()
     
-    def __str__(self):
+    def __str__(self): # move to cli 
         return f"{self.name}"

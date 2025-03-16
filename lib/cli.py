@@ -11,25 +11,33 @@ from helpers import (
 
 
 def main():
-    while True: # not exit 
+    # categories loop 
+    choice = ""
+    while choice != 0: # not exit 
         menu()
         choice = input("> ").strip()
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            list_categories()
-        elif choice == "2": # delete category 
+        #if choice == "0":
+            
+        if choice == "1": # change numbers to letters 
+            categories = list_categories()
+        elif choice == "2": 
             add_category()
         elif choice == "3":
             delete_category()
-        elif choice == "4":
-            add_meal()
-        elif choice == "5":
-            delete_meal()
-        elif choice == "6":
-            edit_meal()
+        # elif choice == "4":
+        #     add_meal()
+        # elif choice == "5":
+        #     delete_meal()
+        # elif choice == "6":
+        #     edit_meal()
+        elif choice == ???: # is an int taht represents one of the categories 
+            # grab the category that i picked 
+
         else:
             print("Invalid choice")
+    exit_program()
+
+# meals loop (category)
 
 
 def menu():

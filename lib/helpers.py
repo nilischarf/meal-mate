@@ -43,7 +43,7 @@ def add_meal():
     prep_time = int(input("Enter prep time (in minutes): "))
     rating = int(input("Enter rating (1-5): "))
 
-    Meal.create(name, category.id, easiness, prep_time, rating)
+    Meal.create(name, easiness, prep_time, rating, category_id)
     print(f"Meal '{meal.name}' added to {category.name}.")
 
 def delete_meal():
