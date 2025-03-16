@@ -44,7 +44,7 @@ class Meal:
 
     @property
     def prep_time(self):
-        return self.prep_time
+        return self._prep_time
 
     @prep_time.setter
     def prep_time(self, prep_time):
@@ -57,7 +57,7 @@ class Meal:
 
     @property
     def rating(self):
-        return self.rating
+        return self._rating
 
     @rating.setter
     def rating(self, rating):
@@ -67,70 +67,121 @@ class Meal:
             raise ValueError(
                 "Rating must be an integer between 1 and 5."
             )
+
+    @property
+    def category_id(self):
+        return self._category_id
+
+    @category_id.setter
+    def category_id(self, category_id):
+        if type(category_id) is int and Category.find_by_id(category_id):
+            self._category_id = category_id
+        else:
+            raise ValueError(
+                "category_id must reference a category in the database."
+            )
     
     @classmethod
     def create_table(cls):
-        # take out check(easiness) and do it in validations in setters 
-        CURSOR.execute("""
-            CREATE TABLE IF NOT EXISTS meals(
+        sql = """
+            CREATE TABLE IF NOT EXISTS meals (
                 id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL, 
-                easiness INTEGER CHECK(easiness BETWEEN 1 AND 5),
-                prep_time INTEGER NOT NULL,
-                rating INTEGER CHECK(easiness BETWEEN 1 AND 5), 
-                category_id INTEGER NOT NULL,
+                name TEXT, 
+                easiness INTEGER,
+                prep_time INTEGER,
+                rating INTEGER, 
+                category_id INTEGER,
                 FOREIGN KEY (category_id) REFERENCES categories(id)
-            )
-        """)
+        """
+        CURSOR.execute(sql)
         CONN.commit()
 
     @classmethod
-    def create(cls, name, easiness, prep_time, rating, category_id):
-        CURSOR.execute("""
-            INSERT INTO meals (name, easiness, prep_time, rating, category_id) 
-            VALUES (?, ?, ?, ?, ?)
-        """, (name, easiness, prep_time, rating, category_id))
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS meals;
+        """
+        CURSOR.execute(sql)
         CONN.commit()
-        return cls(CURSOR.lastrowid, name, easiness, prep_time, rating, category_id)
-    
-    @classmethod
-    def get_by_category(cls, category_id):
-        CURSOR.execute("SELECT * FROM meals WHERE category_id = ?", (category_id,))
-        return [cls(*row) for row in CURSOR.fetchall()]
 
-    @classmethod
-    def find_by_name(cls, name):
-        CURSOR.execute("SELECT * FROM meals where name = ?", (name,))
-        row = CURSOR.fetchone()
-        return cls(*row) if row else None
+    def save(self):
+        sql = """
+                INSERT INTO meals (name, easiness, prep_time, rating, category_id)
+                VALUES (?, ?, ?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.easiness, self.prep_time, self.rating, self.category_id))
+        CONN.commit()
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
 
-    @classmethod
-    def get_all(cls):
-        CURSOR.execute("SELECT * FROM meals")
-        return [cls(*row) for row in CURSOR.fetchall()]
-    
-    def update(self, new_easiness=None, new_prep_time=None, new_rating=None):
-        if new_easiness is not None:
-            self.easiness = new_easiness
-            CURSOR.execute("UPDATE meals SET easiness = ? WHERE id= ?", (self.easiness, self.id))
-
-        if new_prep_time is not None:
-            self.prep_time = new_prep_time
-            CURSOR.execute("UPDATE meals SET prep_time = ? WHERE id= ?", (self.prep_time, self.id))
-
-        if new_rating is not None:
-            self.new_rating = new_rating
-            CURSOR.execute("UPDATE meals SET rating = ? WHERE id= ?", (self.rating, self.id))
-
+    def update(self):
+        sql = """
+            UPDATE meals
+            SET name = ?, easiness = ?, prep_time = ?, rating = ?, category_id = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.easiness, self.prep_time, self.rating, self.category_id, self.id))
         CONN.commit()
 
     def delete(self):
-        CURSOR.execute("DELETE FROM meals WHERE id = ?", (self.id,))
+        sql = """
+            DELETE FROM meals
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
         CONN.commit()
+        del type(self).all[self.id]
+        self.id = None
 
-    def get_categories(self):
-        from models.category import Category
-        return Category.find_by_id(self.id)
+    @classmethod
+    def create(cls, name, easiness, prep_time, rating, category_id):
+        meal = cls(name, easiness, prep_time, rating, category_id)
+        meal.save()
+        return meal
+
+    @classmethod
+    def instance_from_db(cls, row):
+        meal = cls.all.get(row[0])
+        if meal:
+            meal.name = row[1]
+            meal.easiness = row[2]
+            meal.prep_time = row[3]
+            meal.rating = row[4]
+            meal.category_id = row[5]
+        else:
+            meal = cls(row[1], row[2], row[3], row[4], row[5])
+            meal.id = row[0]
+            cls.all[meal.id] = meal
+        return meal
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT *
+            FROM meals
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT *
+            FROM meals
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT *
+            FROM meals
+            WHERE name is ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
     def __str__(self): # move to cli 
         return f"{self.name} ({self.category})"
