@@ -64,22 +64,77 @@ class Category:
         category = cls(name)
         category.save()
         return category
-   
+
+    def update(self):
+        sql = """
+            UPDATE categories
+            SET name = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.id))
+        CONN.commit()
+
+    def delete(self):
+        sql = """
+            DELETE FROM departments
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+        del type(self).all[self.id]
+        self.id = None
+
+
     @classmethod
-    def find_by_name(cls, name):
-        CURSOR.execute("SELECT * FROM categories where name = ?", (name,))
-        row = CURSOR.fetchone()
-        return cls(*row) if row else None
+    def instance_from_db(cls, row):
+        category = cls.all.get(row[0])
+        if category:
+            category.name = row[1]
+        else:
+            category = cls(row[1])
+            category.id = row[0]
+            cls.all[category.id] = category
+        return category
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT * 
+            FROM departments
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
 
     @classmethod
     def find_by_id(cls, id):
-        CURSOR.execute("SELECT * FROM categories WHERE id = ?", (id,))
-        row = CURSOR.fetchone()
-        return cls(*row) if row else None
+        sql = """
+            SELECT * 
+            FROM categories 
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT * 
+            FROM categories 
+            WHERE name is ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    def meals(self):
+        from meals import Meal
+        sql = """
+            SELECT * FROM employees
+            WHERE category_id = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+        rows = CURSOR.fetchall()
+        return [Meal.instance_from_db(row) for row in rows]
     
-    def delete(self):
-        CURSOR.execute("DELETE FROM categories WHERE id = ?", (self.id,))
-        CONN.commit()
     
     def __str__(self): # move to cli 
         return f"{self.name}"
