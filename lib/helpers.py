@@ -75,8 +75,7 @@ def edit_meal(category):
             print("Meal edited successfully.")
         else:
             print("Invalid meal number.")
-
-
+            
 def exit_program():
     print("Goodbye!")
     exit()

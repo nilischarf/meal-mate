@@ -2,66 +2,62 @@
 
 from helpers import (
     list_categories,
-    add_category,
+    create_category,
     delete_category,
-    add_meal,
+    list_meals,
+    create_meal,
     delete_meal,
-    edit_meal
+    edit_meal,
+    exit_program
 )
 
 
 def categories():
     choice = ""
-    while choice != 0: 
+    while choice != "E": 
         menu()
         choice = input("> ").strip()
-        if choice == "?": # is an int taht represents one of the categories --> how do i make my categories into ints if they get to choose category names 
+        categories = list_categories()
+
+        if isinstance(choice, int) and 1 <= int(choice) <= len(categories):
             category = categories[int(choice) - 1]
-            meals_loop(category)
-            categories = list_categories()
-        elif choice == "A": 
-            add_category()
-        elif choice == "D":
+            meals(category)
+        elif choice.upper() == "C":
+            create_category()
+        elif choice.upper() == "D":
             delete_category()
-        
-        elif choice == ???: 
-            # grab the category that i picked 
-            category = categories[int(choice) - 1]
-            meals_loop(category)
         else:
             print("Invalid choice")
     exit_program()
 
-# meals loop (category)
-def meals_loop(category):
-    category.meals() # category model has to have an instance method meals that returns meals in category
-    # elif choice == "4":
-        #     add_meal()
-        # elif choice == "5":
-        #     delete_meal()
-        # elif choice == "6":
-        #     edit_meal()
+def meals(category):
+    choice = ""
+    while choice != "B": 
+        print(f"{category.name} Meals Menu:")
+        options = ["List meals", "Add meal", "Delete meal", "Edit meal", "Go back"]
+        for index, option in enumerate(options, start=1):
+            print(f"{index}. {option}")
+        
+        choice = input("Enter your choice: ")
+        if choice == "L":
+            list_meals(category)
+        elif choice == "C":
+            create_meal(category)
+        elif choice == "D":
+            delete_meal(category)
+        elif choice == "E":
+            edit_meal(category)
+        else:
+            print("Invalid choice. Please try again.")
+    # go back a level
+       
 
-# meal loop (meal)
 
 def menu():
     print("MealMate Menu:")
-    print("Please select an option:")
-    print("0. Exit Program")
-    print("1. View Categories")
-    print("2. Add Category") 
-    print("3. Delete Category") 
-    print("4. Add Meal to Category") 
-    print("5. Delete Meal")
-    print("6. Edit Meal")
-
+    options = ["List categories", "Create category", "Delete category", "Select category", "Exit"]
+    for index, option in enumerate(options, start=1):
+        print(f"{index}. {option}")
 
 if __name__ == "__main__":
     main()
-
-
-# def __str__(self): # move to cli 
-#         return f"{self.name} ({self.category})"
-
-# def __str__(self): # move to cli 
-#         return f"{self.name}"
