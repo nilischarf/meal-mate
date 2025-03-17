@@ -10,35 +10,39 @@ from helpers import (
 )
 
 
-def main():
-    # categories loop 
+def categories():
     choice = ""
-    while choice != 0: # not exit 
+    while choice != 0: 
         menu()
         choice = input("> ").strip()
-        #if choice == "0":
-            
-        if choice == "1": # change numbers to letters 
+        if choice == "?": # is an int taht represents one of the categories --> how do i make my categories into ints if they get to choose category names 
+            category = categories[int(choice) - 1]
+            meals_loop(category)
             categories = list_categories()
-        elif choice == "2": 
+        elif choice == "A": 
             add_category()
-        elif choice == "3":
+        elif choice == "D":
             delete_category()
-        # elif choice == "4":
-        #     add_meal()
-        # elif choice == "5":
-        #     delete_meal()
-        # elif choice == "6":
-        #     edit_meal()
-        elif choice == ???: # is an int taht represents one of the categories 
+        
+        elif choice == ???: 
             # grab the category that i picked 
-
+            category = categories[int(choice) - 1]
+            meals_loop(category)
         else:
             print("Invalid choice")
     exit_program()
 
 # meals loop (category)
+def meals_loop(category):
+    category.meals() # category model has to have an instance method meals that returns meals in category
+    # elif choice == "4":
+        #     add_meal()
+        # elif choice == "5":
+        #     delete_meal()
+        # elif choice == "6":
+        #     edit_meal()
 
+# meal loop (meal)
 
 def menu():
     print("MealMate Menu:")
@@ -54,3 +58,10 @@ def menu():
 
 if __name__ == "__main__":
     main()
+
+
+# def __str__(self): # move to cli 
+#         return f"{self.name} ({self.category})"
+
+# def __str__(self): # move to cli 
+#         return f"{self.name}"

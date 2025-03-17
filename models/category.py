@@ -134,7 +134,3 @@ class Category:
         CURSOR.execute(sql, (self.id,),)
         rows = CURSOR.fetchall()
         return [Meal.instance_from_db(row) for row in rows]
-    
-    
-    def __str__(self): # move to cli 
-        return f"{self.name}"

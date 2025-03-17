@@ -182,6 +182,3 @@ class Meal:
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
-    def __str__(self): # move to cli 
-        return f"{self.name} ({self.category})"
