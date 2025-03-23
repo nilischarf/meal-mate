@@ -1,5 +1,5 @@
 from models.__init__ import CONN, CURSOR
-from category import Category
+from models.category import Category
 
 class Meal:
     def __init__(self, name, easiness, prep_time, rating, category_id, id=None):
@@ -13,7 +13,7 @@ class Meal:
     def __repr__(self):
         return (
             f"<Meal {self.id}: {self.name}, {self.easiness}, {self.prep_time}, {self.rating}, " +
-            f"Department ID: {self.department_id}>"
+            f"Category ID: {self.category_id}>"
         )
 
     @property
@@ -84,7 +84,7 @@ class Meal:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE IF NOT EXISTS meals (
+            CREATE TABLE meals (
                 id INTEGER PRIMARY KEY,
                 name TEXT, 
                 easiness INTEGER,
@@ -92,6 +92,7 @@ class Meal:
                 rating INTEGER, 
                 category_id INTEGER,
                 FOREIGN KEY (category_id) REFERENCES categories(id)
+            )
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -109,7 +110,7 @@ class Meal:
                 INSERT INTO meals (name, easiness, prep_time, rating, category_id)
                 VALUES (?, ?, ?, ?, ?)
         """
-        CURSOR.execute(sql, (self.name, self.easiness, self.prep_time, self.rating, self.category_id))
+        CURSOR.execute(sql, (self.name, self.easiness, self.prep_time, self.rating, self.category_id,))
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
@@ -149,8 +150,7 @@ class Meal:
             meal.rating = row[4]
             meal.category_id = row[5]
         else:
-            meal = cls(row[1], row[2], row[3], row[4], row[5])
-            meal.id = row[0]
+            meal = cls(row[1], row[2], row[3], row[4], row[5], row[0])
             cls.all[meal.id] = meal
         return meal
 
@@ -178,7 +178,7 @@ class Meal:
         sql = """
             SELECT *
             FROM meals
-            WHERE name is ?
+            WHERE name = ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None

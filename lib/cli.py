@@ -14,21 +14,29 @@ from helpers import (
 
 def categories():
     choice = ""
-    while choice != "E": 
+    while choice.upper() != "E": 
         menu()
         choice = input("> ").strip()
-        categories = list_categories()
 
-        if isinstance(choice, int) and 1 <= int(choice) <= len(categories):
-            category = categories[int(choice) - 1]
-            meals(category)
+        categories = list_categories()
+        # if not categories... 
+
+        if choice.isdigit():
+            choice = int(choice)
+            if 1 <= choice <= len(categories):
+                category = categories[choice - 1]
+                meals(category)
+            else: 
+                print("Invalid category.")
         elif choice.upper() == "C":
             create_category()
         elif choice.upper() == "D":
             delete_category()
+        elif choice.upper() == "E":
+            exit_program()
         else:
             print("Invalid choice")
-    exit_program()
+    
 
 def meals(category):
     choice = ""
@@ -60,4 +68,4 @@ def menu():
         print(f"{index}. {option}")
 
 if __name__ == "__main__":
-    main()
+    categories()

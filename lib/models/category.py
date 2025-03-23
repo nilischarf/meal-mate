@@ -25,11 +25,11 @@ class Category:
 
     @classmethod
     def create_table(cls):
-            sql = """
-                CREATE TABLE IF NOT EXISTS categories(
-                id INTEGER PRIMARY KEY,
-                name TEXT)
-            """
+        sql = """
+            CREATE TABLE IF NOT EXISTS categories(
+            id INTEGER PRIMARY KEY,
+            name TEXT)
+        """
         CURSOR.execute(sql)
         CONN.commit()
 
@@ -46,7 +46,7 @@ class Category:
             INSERT INTO categories (name)
             VALUES (?)
         """
-        CURSOR.execute(sql, (self.name))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -76,7 +76,7 @@ class Category:
 
     def delete(self):
         sql = """
-            DELETE FROM departments
+            DELETE FROM categories
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.id,))
@@ -91,8 +91,7 @@ class Category:
         if category:
             category.name = row[1]
         else:
-            category = cls(row[1])
-            category.id = row[0]
+            category = cls(row[0], row[1])
             cls.all[category.id] = category
         return category
 
@@ -100,7 +99,7 @@ class Category:
     def get_all(cls):
         sql = """
             SELECT * 
-            FROM departments
+            FROM categories
         """
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows]
@@ -128,7 +127,7 @@ class Category:
     def meals(self):
         from meals import Meal
         sql = """
-            SELECT * FROM employees
+            SELECT * FROM meals
             WHERE category_id = ?
         """
         CURSOR.execute(sql, (self.id,),)

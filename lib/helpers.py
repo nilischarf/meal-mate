@@ -11,7 +11,7 @@ def list_categories():
     else:
         print("Categories:")
         for i, category in enumerate(categories, start=1):
-            print(f"{i}. {category}")
+            print(f"{i}. {category.name}") 
         return categories
 
 def create_category():
@@ -63,19 +63,18 @@ def edit_meal(category):
     meals = list_meals(category)
     if not meals:
         return
-    try:
-        meal_index = int(input("Enter meal number to edit: ")) - 1
-        if 0 <= meals_index < len(meals):
-            meal = meals[meals_index]
-            meal.name = input(f"Enter new name ({meal.name}): " or meal.name)
-            meal.easiness = int(input(f"Enter new easiness (1-5), current {meal.easiness}): ") or meal.easiness)
-            meal.prep_time = int(input(f"Enter new prep time (current {meal.prep_time}): " or meal.prep_time))
-            meal.rating = int(input(f"Enter new rating (1-5), (current {meal.rating}): " or meal.rating))
-            meal.update()
-            print("Meal edited successfully.")
-        else:
-            print("Invalid meal number.")
-            
+    meal_index = int(input("Enter meal number to edit: ")) - 1
+    if 0 <= meals_index < len(meals):
+        meal = meals[meals_index]
+        meal.name = input(f"Enter new name ({meal.name}): " or meal.name)
+        meal.easiness = int(input(f"Enter new easiness (1-5), current {meal.easiness}): ") or meal.easiness)
+        meal.prep_time = int(input(f"Enter new prep time (current {meal.prep_time}): " or meal.prep_time))
+        meal.rating = int(input(f"Enter new rating (1-5), (current {meal.rating}): " or meal.rating))
+        meal.update()
+        print("Meal edited successfully.")
+    else:
+        print("Invalid meal number.")
+
 def exit_program():
     print("Goodbye!")
     exit()
