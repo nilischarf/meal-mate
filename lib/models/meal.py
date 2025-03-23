@@ -2,6 +2,8 @@ from models.__init__ import CONN, CURSOR
 from models.category import Category
 
 class Meal:
+    all = {} 
+    
     def __init__(self, name, easiness, prep_time, rating, category_id, id=None):
         self.id = id
         self.name = name

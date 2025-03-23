@@ -7,7 +7,7 @@ def list_categories():
     categories = Category.get_all()
     if not categories:
         print("No categories found. Please add a category.")
-        return None
+        return []
     else:
         print("Categories:")
         for i, category in enumerate(categories, start=1):
@@ -64,8 +64,8 @@ def edit_meal(category):
     if not meals:
         return
     meal_index = int(input("Enter meal number to edit: ")) - 1
-    if 0 <= meals_index < len(meals):
-        meal = meals[meals_index]
+    if 0 <= meal_index < len(meals):
+        meal = meals[meal_index]
         meal.name = input(f"Enter new name ({meal.name}): " or meal.name)
         meal.easiness = int(input(f"Enter new easiness (1-5), current {meal.easiness}): ") or meal.easiness)
         meal.prep_time = int(input(f"Enter new prep time (current {meal.prep_time}): " or meal.prep_time))

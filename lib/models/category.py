@@ -119,13 +119,13 @@ class Category:
         sql = """
             SELECT * 
             FROM categories 
-            WHERE name is ?
+            WHERE name = ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     def meals(self):
-        from meals import Meal
+        from models.meal import Meal
         sql = """
             SELECT * FROM meals
             WHERE category_id = ?
