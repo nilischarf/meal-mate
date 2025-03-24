@@ -14,41 +14,30 @@ from helpers import (
 
 def categories():
     choice = ""
-    while choice != "5": 
+    while choice != "4": 
         menu()
         choice = input("> ").strip()
 
         if choice == "1":
             categories_list = list_categories()
             if categories_list:
-                print("Select a category by letter to enter it, or choose another option: ")
+                print("Select a category by letter to enter it, or select Enter to continue: ")
                 category_choice = input("> ").strip().upper()
-                if category_choice.isalpha() and "A" <= category_choice < chr(65 + len(categories_list)):
-                    category_index = ord(category_choice) - 65  # Convert 'A' -> 0, 'B' -> 1, etc.
-                    category = categories_list[category_index]
+                if category_choice.isalpha() and "A" <= category_choice < chr(65 + len(categories_list)): # max letter number of meals 
+                    category_index = ord(category_choice) - 65 # calculate the position of the letter in the alphabet (subtract 65 from ASCII)
+                    category = categories_list[category_index] # get the category at that index
                     meals(category)
+                else:
+                    print()
             else:
-                print("Invalid choice.")
+                print("No categories available.")
         elif choice == "2":
             create_category()
         elif choice == "3":
             delete_category()
-        elif choice == "4":
-            print("Please list categories first to select one.")
-        elif choice.isdigit():
-            choice = int(choice)
-            categories_list = list_categories()
-            if 1 <= choice <= len(categories_list):
-                category = categories_list[choice - 1]
-                meals(category)
-            else: 
-                print("Invalid category.")
-        elif choice ==  "5":
-            exit_program()
-        else:
+        elif int(choice) == 0 or int(choice) > 4:
             print("Invalid choice. Please try again.")
     exit_program()
-    
 
 def meals(category):
     choice = ""
@@ -76,12 +65,13 @@ def meals(category):
 
 def menu():
     print("MealMate Menu:")
-    options = ["List categories", "Create category", "Delete category", "Select category", "Exit"]
+    options = ["List categories", "Create category", "Delete category", "Exit"]
     for index, option in enumerate(options, start=1):
         print(f"{index}. {option}")
 
 if __name__ == "__main__":
     categories()
 
-# need to fix delete - why by 1 less? 
-# need to fix selection process/category and lisitng meals
+# meals loop is good!
+# categories - 
+# 4) look into ord, chr, +/- 65

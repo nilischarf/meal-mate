@@ -25,10 +25,16 @@ def delete_category():
     categories = list_categories()
     if not categories:
         return
-    category_index = int(input("Enter category number to delete: ")) - 1
+    letter_input = input("Enter category letter to delete: ").upper()
+    category_index = ord(letter_input) - 65 
     if 0 <= category_index < len(categories):
-        categories[category_index].delete()
-        print("Category deleted successfully.")
+        category_to_delete = categories[category_index]
+        meals = category_to_delete.meals()
+        if meals:
+            for meal in meals:
+                meal.delete()
+        category_to_delete.delete()
+        print("Category and its meals deleted successfully.")
     else:
         print("Invalid category number.")
 
