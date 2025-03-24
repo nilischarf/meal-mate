@@ -11,7 +11,8 @@ def list_categories():
     else:
         print("Categories:")
         for i, category in enumerate(categories, start=1):
-            print(f"{i}. {category.name}") 
+            letter = chr(64 + i)
+            print(f"{letter}. {category.name}") 
         return categories
 
 def create_category():
@@ -37,7 +38,7 @@ def list_meals(category):
         print("No meals found in this category.")
     else:
         for index, meal in enumerate(meals, start=1):
-            print(f"{index}. {meal}")
+            print(f"{index}. Name: {meal.name}, Easiness: {meal.easiness}, Prep Time: {meal.prep_time}, Rating: {meal.rating}")
     return meals
 
 def create_meal(category):
@@ -46,7 +47,7 @@ def create_meal(category):
     prep_time = int(input("Enter prep time (in minutes): "))
     rating = int(input("Enter rating (1-5): "))
     meal = Meal.create(name, easiness, prep_time, rating, category.id)
-    print(f"Created Meal: {meal}")
+    print(f"Created Meal - Name: {meal.name}, Easiness: {meal.easiness}, Prep Time: {meal.prep_time}, Rating: {meal.rating}")
 
 def delete_meal(category):
     meals = list_meals(category)
@@ -66,10 +67,17 @@ def edit_meal(category):
     meal_index = int(input("Enter meal number to edit: ")) - 1
     if 0 <= meal_index < len(meals):
         meal = meals[meal_index]
-        meal.name = input(f"Enter new name ({meal.name}): " or meal.name)
-        meal.easiness = int(input(f"Enter new easiness (1-5), current {meal.easiness}): ") or meal.easiness)
-        meal.prep_time = int(input(f"Enter new prep time (current {meal.prep_time}): " or meal.prep_time))
-        meal.rating = int(input(f"Enter new rating (1-5), (current {meal.rating}): " or meal.rating))
+        print("Press Enter to keep the current value.")
+        new_name = input(f"Enter new name ({meal.name}): ")
+        new_easiness = input(f"Enter new easiness (1-5), current {meal.easiness}): ")
+        new_prep_time = input(f"Enter new prep time (current {meal.prep_time}): ")
+        new_rating = input(f"Enter new rating (1-5), (current {meal.rating}): ")
+
+        meal.name = new_name if new_name else meal.name
+        meal.easiness = int(new_easiness) if new_easiness.isdigit() else meal.easiness
+        meal.prep_time = int(new_prep_time) if new_prep_time.isdigit() else meal.prep_time
+        meal.rating = int(new_rating) if new_rating.isdigit() else meal.rating
+
         meal.update()
         print("Meal edited successfully.")
     else:

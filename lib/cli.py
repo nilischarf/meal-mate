@@ -14,20 +14,27 @@ from helpers import (
 
 def categories():
     choice = ""
-    while choice != "4": 
+    while choice != "5": 
         menu()
         choice = input("> ").strip()
 
         if choice == "1":
             categories_list = list_categories()
             if categories_list:
-                print("Select a category by number to enter it, or choose another option: ")
+                print("Select a category by letter to enter it, or choose another option: ")
+                category_choice = input("> ").strip().upper()
+                if category_choice.isalpha() and "A" <= category_choice < chr(65 + len(categories_list)):
+                    category_index = ord(category_choice) - 65  # Convert 'A' -> 0, 'B' -> 1, etc.
+                    category = categories_list[category_index]
+                    meals(category)
             else:
-                print("No categories available.")
+                print("Invalid choice.")
         elif choice == "2":
             create_category()
         elif choice == "3":
             delete_category()
+        elif choice == "4":
+            print("Please list categories first to select one.")
         elif choice.isdigit():
             choice = int(choice)
             categories_list = list_categories()
@@ -36,6 +43,8 @@ def categories():
                 meals(category)
             else: 
                 print("Invalid category.")
+        elif choice ==  "5":
+            exit_program()
         else:
             print("Invalid choice. Please try again.")
     exit_program()
@@ -75,4 +84,4 @@ if __name__ == "__main__":
     categories()
 
 # need to fix delete - why by 1 less? 
-# need to fix selection process/category and lisitng meals 
+# need to fix selection process/category and lisitng meals
