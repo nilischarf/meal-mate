@@ -66,6 +66,7 @@ def delete_meal(category):
     else:
         print("Invalid meal number.")
 
+# add try/except 
 def edit_meal(category):
     meals = list_meals(category)
     if not meals:
@@ -75,20 +76,40 @@ def edit_meal(category):
         meal = meals[meal_index]
         print("Press Enter to keep the current value.")
         new_name = input(f"Enter new name ({meal.name}): ")
-        new_easiness = input(f"Enter new easiness (1-5), current {meal.easiness}): ")
         new_prep_time = input(f"Enter new prep time (current {meal.prep_time}): ")
-        new_rating = input(f"Enter new rating (1-5), (current {meal.rating}): ")
+
+        def get_valid_input(prompt, current_value):
+            while True:
+                value = input(prompt)
+                if not value:
+                    return current_value
+                try:
+                    value = int(value)
+                    if 1 <= value <= 5:
+                        return value
+                    else:
+                        print("Please enter a number between 1 and 5.")
+                except ValueError:
+                    print("Invalid input. Please enter a number between 1 and 5.")
 
         meal.name = new_name if new_name else meal.name
-        meal.easiness = int(new_easiness) if new_easiness.isdigit() else meal.easiness
         meal.prep_time = int(new_prep_time) if new_prep_time.isdigit() else meal.prep_time
-        meal.rating = int(new_rating) if new_rating.isdigit() else meal.rating
+        meal.prep_time = int(new_prep_time) if new_prep_time.isdigit() else meal.prep_time
+        meal.easiness = get_valid_input(f"Enter new easiness (1-5), current ({meal.easiness}): ", meal.easiness)
+        meal.rating = get_valid_input(f"Enter new rating (1-5), (current {meal.rating}): ", meal.rating)
+        
+        try: 
+            meal.update()
+            print("Meal edited successfully.")
+        except Exception as e:
+            print(f"An error occured while updating the meal: {e}") 
 
-        meal.update()
-        print("Meal edited successfully.")
     else:
         print("Invalid meal number.")
 
 def exit_program():
     print("Goodbye!")
     exit()
+
+
+# stars and spaces, readme 
