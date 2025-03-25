@@ -1,11 +1,43 @@
-README test 
-README.md is a Markdown file that should describe your project. You will replace the contents of this README.md file with a description of your actual project.
+MealMate CLI
 
-Markdown is not a language that we cover in Flatiron's Software Engineering curriculum, but it's not a particularly difficult language to learn (if you've ever left a comment on Reddit, you might already know the basics). Refer to the cheat sheet in this assignments's resources for a basic guide to Markdown.
+MealMate is a command-line interface (CLI) application that allows users to manage categories and meals. Users can list, create, edit, and delete meals and organize them into categories. It is perfect for anyone trying to meal plan or store data on how much they or their loved ones like a meal, its prep time, easiness, etc. 
 
-What Goes into a README?
-This README serves as a template. Replace the contents of this file to describe the important files in your project and describe what they do. Each Python file that you edit should get at least a paragraph, and each function should be described with a sentence or two.
+Installation:
 
-Describe your actual CLI script first, and with a good level of detail. The rest should be ordered by importance to the user. (Probably functions next, then models.)
+Clone the repository and navigate to the project directory:
+git clone https://github.com/nilischarf/mealmate-cli.git
+cd mealmate-cli
+Ensure you have Python installed and that you install the required dependencies. 
 
-Screenshots and links to resources that you used throughout are also useful to users and collaborators, but a little more syntactically complicated. Only add these in if you're feeling comfortable with Markdown.
+Usage:
+
+Run the application using:
+python lib/cli.py
+
+Features:
+List, create, and delete categories
+List, create, delete, and edit meals 
+Navigate easily through categories and meals in a menu
+
+License:
+MIT License
+
+Copyright (c) [2025] [Nili Scharf]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
