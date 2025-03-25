@@ -1,7 +1,5 @@
 # lib/cli.py
 
-# add spaces and stars 
-
 from helpers import (
     list_categories,
     create_category,

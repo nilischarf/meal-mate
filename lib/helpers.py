@@ -139,6 +139,3 @@ def exit_program():
     print("Goodbye!")
     print_separator()
     exit()
-
-
-# stars and spaces, readme 
