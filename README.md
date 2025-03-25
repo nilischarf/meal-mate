@@ -5,7 +5,7 @@ MealMate is a command-line interface (CLI) application that allows users to mana
 Installation:
 
 Clone the repository and navigate to the project directory:
-git clone https://github.com/nilischarf/mealmate-cli.git
+git clone https://github.com/nilischarf/meal-mate.git 
 cd mealmate-cli
 Ensure you have Python installed and that you install the required dependencies. 
 
